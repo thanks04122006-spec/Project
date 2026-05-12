@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>웹툰 라이브러리</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">TOON<span>VERSE</span></div>
+  <div class="search-wrap">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input type="text" placeholder="제목, 작가 검색..." id="searchInput" oninput="onSearch()">
+  </div>
+</header>
+
+<!-- 사이트 탭 -->
+<nav class="site-nav">
+  <div class="site-tabs" id="siteTabs"></div>
+</nav>
+
+<main>
+  <h1 class="section-title" id="siteTitle">전체 웹툰</h1>
+  <p class="section-sub" id="siteSub">모든 플랫폼의 웹툰을 한눈에</p>
+
+  <!-- 장르 필터 -->
+  <div class="filter-row">
+    <span class="filter-label">장르</span>
+    <div class="genre-bar" id="genreBar"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<!-- 상세 오버레이 -->
+<div class="detail-overlay" id="overlay" onclick="closeDetail()"></div>
+
+<div class="detail-panel" id="detailPanel" role="dialog" aria-modal="true">
+  <div class="detail-thumb" id="dThumb"></div>
+  <div class="detail-content">
+    <div class="detail-header">
+      <div>
+        <div class="detail-meta-row" id="dMetaRow"></div>
+        <div class="detail-title" id="dTitle"></div>
+        <div class="detail-author" id="dAuthor"></div>
+      </div>
+      <button class="detail-close" onclick="closeDetail()" aria-label="닫기">✕</button>
+    </div>
+    <div class="detail-stats" id="dStats"></div>
+    <hr class="divider">
+    <p class="detail-desc" id="dDesc"></p>
+    <div class="detail-tags" id="dTags"></div>
+    <button class="read-btn" id="dReadBtn">첫화 보기 →</button>
+  </div>
+</div>
+
+<script>
+/* ── 데이터 ── */
+const SITES = [
+  { id: 'all',    label: '전체',   color: '#e8c97a', desc: '모든 플랫폼의 웹툰을 한눈에' },
+  { id: 'naver',  label: '네이버', color: '#03C75A', desc: '네이버 웹툰 인기작 모음' },
+  { id: 'kakao',  label: '카카오', color: '#FEE500', desc: '카카오웹툰 추천작' },
+  { id: 'lezhin', label: '레진',  color: '#e84248', desc: '레진코믹스 인기작' },
+  { id: 'ridi',   label: '리디',  color: '#1F8CE6', desc: '리디 웹툰 추천작' },
+  { id: 'series', label: '시리즈', color: '#FF6B00', desc: '네이버 시리즈 인기 작품' },
+];
+
+const GENRES = ['전체','로맨스','액션','판타지','스릴러','코미디','드라마'];
+
+const webtoons = [
+  { id:1,  emoji:'🌸', title:'봄날의 기적',      author:'이하늘', genre:'로맨스', cls:'romance', rating:9.7, episodes:120, views:'2.1억', status:'완결', site:'naver',  tags:['순정','감동','재회'],    bg:'#2a1520', desc:'어릴 적 헤어진 첫사랑과 10년 만에 직장에서 재회하게 된 두 사람의 가슴 설레는 사랑 이야기. 과거의 기억과 현재의 감정이 교차하며 독자들의 마음을 사로잡는다.'},
+  { id:2,  emoji:'⚔️', title:'최강의 귀환',      author:'박무진', genre:'액션',   cls:'action',  rating:9.4, episodes:280, views:'5.8억', status:'연재중', site:'naver', tags:['회귀','성장','배틀'],    bg:'#1e1308', desc:'죽음 직전 10년 전으로 회귀한 전 세계 최강자가 모든 것을 되찾기 위해 다시 정점을 향해 달려가는 이야기.' },
+  { id:3,  emoji:'🐉', title:'용사 아닙니다만',   author:'김세원', genre:'판타지', cls:'fantasy', rating:9.5, episodes:195, views:'3.4억', status:'연재중', site:'kakao', tags:['이세계','마법','개그'],  bg:'#14102a', desc:'평범한 직장인이 이세계에 소환됐지만 용사가 아닌 잡역부로 분류된다. 엉뚱한 능력으로 세계를 구하는 역발상 판타지 코미디.' },
+  { id:4,  emoji:'🔪', title:'다섯번째 피의자',   author:'최진우', genre:'스릴러', cls:'thriller',rating:9.6, episodes:88,  views:'1.9억', status:'완결', site:'lezhin', tags:['미스터리','반전','범죄'], bg:'#111110', desc:'연쇄 살인 사건의 유일한 생존자가 수사에 합류하면서 드러나는 충격적인 진실. 매 화 예상치 못한 반전이 독자를 숨막히게 한다.' },
+  { id:5,  emoji:'😂', title:'우리 회사 이상해요', author:'오유리', genre:'코미디', cls:'comedy',  rating:9.2, episodes:210, views:'4.1억', status:'연재중', site:'naver', tags:['직장물','일상','공감'],  bg:'#1e1600', desc:'대한민국 평균 회사의 개성 넘치는 직원들이 펼치는 좌충우돌 직장 생활기. 직장인이라면 공감할 수밖에 없는 현실 코미디.' },
+  { id:6,  emoji:'🌊', title:'파도가 지나면',     author:'한지수', genre:'드라마', cls:'drama',   rating:9.3, episodes:145, views:'2.7억', status:'완결', site:'ridi',   tags:['가족','치유','성장'],    bg:'#0c1a14', desc:'갑작스러운 사고로 가족을 잃은 한 여성이 낯선 섬마을에서 상처를 치유해가는 이야기. 잔잔하지만 깊은 감동을 주는 힐링 드라마.' },
+  { id:7,  emoji:'💌', title:'남주의 취향',       author:'정다은', genre:'로맨스', cls:'romance', rating:9.1, episodes:178, views:'3.2억', status:'연재중', site:'kakao', tags:['로코','오피스','삼각관계'],bg:'#2a1520', desc:'까다롭기로 소문난 편집장과 신인 작가의 티격태격 로맨스. 서로 다른 취향을 가진 두 사람이 점점 서로에게 빠져드는 과정을 담았다.' },
+  { id:8,  emoji:'🏴‍☠️', title:'검은 바다의 왕',  author:'윤민준', genre:'액션',   cls:'action',  rating:9.8, episodes:320, views:'7.2억', status:'연재중', site:'series',tags:['해적','모험','우정'],    bg:'#0c1220', desc:'세계 최강의 해적 왕이 되기 위한 한 소년의 거대한 모험담. 치열한 해전과 끈끈한 동료애가 독자들의 마음을 사로잡는 대서사시.' },
+  { id:9,  emoji:'🦋', title:'나비의 계절',       author:'서민지', genre:'로맨스', cls:'romance', rating:9.0, episodes:96,  views:'1.4억', status:'완결', site:'lezhin', tags:['순정','성장','감동'],    bg:'#1a1228', desc:'연약하지만 강인한 한 소녀가 사랑을 통해 스스로의 날개를 펼쳐가는 성장 로맨스.' },
+  { id:10, emoji:'🧬', title:'프로젝트 X',        author:'김도현', genre:'스릴러', cls:'thriller',rating:9.5, episodes:112, views:'2.3억', status:'연재중', site:'ridi',   tags:['SF','음모','긴장감'],   bg:'#0a1218', desc:'정체불명의 생체 실험을 파헤치려는 기자와 이를 막으려는 거대 기업의 숨막히는 추격전.' },
+  { id:11, emoji:'🍜', title:'오늘도 혼밥',        author:'이준호', genre:'코미디', cls:'comedy',  rating:8.9, episodes:230, views:'3.8억', status:'연재중', site:'naver',  tags:['일상','먹방','힐링'],   bg:'#1a1208', desc:'혼자 먹는 것을 즐기는 30대 직장인의 소소하고 행복한 식사 일기. 보는 것만으로도 배가 부른 힐링 코미디.' },
+  { id:12, emoji:'🏰', title:'마지막 기사단',      author:'박성현', genre:'판타지', cls:'fantasy', rating:9.6, episodes:260, views:'4.9억', status:'연재중', site:'series', tags:['중세','전쟁','우정'],   bg:'#141020', desc:'왕국의 마지막 기사단이 되어 부패한 제국에 맞서는 이야기. 장엄한 전투와 끈끈한 동료애가 빛나는 정통 판타지.' },
+];
+
+let activeSite  = 'all';
+let activeGenre = '전체';
+let searchQ     = '';
+
+/* ── 초기화 ── */
+function init() {
+  // 사이트 탭 생성
+  document.getElementById('siteTabs').innerHTML = SITES.map(s => `
+    <button
+      class="site-tab${s.id === 'all' ? ' active' : ''}"
+      style="--site-color:${s.color}"
+      onclick="filterSite('${s.id}', this)"
+    >${s.label}</button>
+  `).join('');
+
+  // 장르 버튼 생성
+  document.getElementById('genreBar').innerHTML = GENRES.map((g, i) =>
+    `<button class="genre-btn${i === 0 ? ' active' : ''}" onclick="filterGenre('${g}', this)">${g}</button>`
+  ).join('');
+
+  render();
+}
+
+/* ── 필터 함수 ── */
+function filterSite(siteId, btn) {
+  activeSite = siteId;
+  document.querySelectorAll('.site-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const s = SITES.find(x => x.id === siteId);
+  document.getElementById('siteTitle').textContent = siteId === 'all' ? '전체 웹툰' : s.label + ' 웹툰';
+  document.getElementById('siteSub').textContent   = s.desc;
+
+  // 장르 필터 초기화
+  activeGenre = '전체';
+  document.querySelectorAll('.genre-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === 0);
+  });
+
+  render();
+}
+
+function filterGenre(genre, btn) {
+  activeGenre = genre;
+  document.querySelectorAll('.genre-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function onSearch() {
+  searchQ = document.getElementById('searchInput').value.trim().toLowerCase();
+  render();
+}
+
+/* ── 렌더 ── */
+function render() {
+  let list = webtoons;
+  if (activeSite  !== 'all')  list = list.filter(w => w.site  === activeSite);
+  if (activeGenre !== '전체') list = list.filter(w => w.genre === activeGenre);
+  if (searchQ) list = list.filter(w =>
+    w.title.toLowerCase().includes(searchQ) || w.author.includes(searchQ)
+  );
+
+  const grid = document.getElementById('grid');
+  if (!list.length) {
+    grid.innerHTML = '<div class="no-result">해당하는 웹툰이 없습니다.</div>';
+    return;
+  }
+
+  const siteColors = Object.fromEntries(SITES.map(s => [s.id, s.color]));
+
+  grid.innerHTML = list.map((w, i) => `
+    <div class="card" style="animation-delay:${i * 0.05}s"
+         onclick="openDetail(${w.id})" tabindex="0" role="button" aria-label="${w.title} 상세보기">
+      <div class="card-thumb" style="background:${w.bg}">
+        <span>${w.emoji}</span>
+        <span class="card-site-badge" style="background:${siteColors[w.site]}">${SITES.find(s=>s.id===w.site).label}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${w.title}</div>
+        <div class="card-author">${w.author}</div>
+        <div class="card-meta">
+          <span class="badge badge-${w.cls}">${w.genre}</span>
+          <span class="rating">★ ${w.rating}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── 상세 패널 ── */
+function openDetail(id) {
+  const w       = webtoons.find(x => x.id === id);
+  const ongoing = w.status === '연재중';
+  const site    = SITES.find(s => s.id === w.site);
+
+  document.getElementById('dThumb').style.background = w.bg;
+  document.getElementById('dThumb').innerHTML = `<span>${w.emoji}</span>`;
+
+  document.getElementById('dMetaRow').innerHTML =
+    `<span class="detail-genre">${w.genre}</span>
+     <span class="detail-site-badge" style="background:${site.color};color:#0f0f10">${site.label}</span>`;
+
+  document.getElementById('dTitle').textContent  = w.title;
+  document.getElementById('dAuthor').textContent = '작가: ' + w.author;
+
+  document.getElementById('dStats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">평점</div><div class="stat-value">★ ${w.rating}</div></div>
+    <div class="stat-card"><div class="stat-label">에피소드</div><div class="stat-value">${w.episodes}화</div></div>
+    <div class="stat-card"><div class="stat-label">조회수</div><div class="stat-value">${w.views}</div></div>
+  `;
+
+  document.getElementById('dDesc').textContent = w.desc;
+  document.getElementById('dTags').innerHTML =
+    `<span class="status-badge ${ongoing ? 'status-ongoing' : 'status-complete'}">
+       <span class="dot ${ongoing ? 'dot-ongoing' : 'dot-complete'}"></span>${w.status}
+     </span>` +
+    w.tags.map(t => `<span class="tag">#${t}</span>`).join('');
+
+  document.getElementById('dReadBtn').onclick = () =>
+    alert(`${site.label}에서 "${w.title}" 첫화 보기`);
+
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('detailPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('detailPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDetail(); });
+
+init();
+</script>
+</body>
+</html>
