@@ -73,18 +73,101 @@ const SITES = [
 const GENRES = ['전체','로맨스','액션','판타지','스릴러','코미디','드라마'];
 
 const webtoons = [
-  { id:1,  emoji:'🌸', title:'봄날의 기적',      author:'이하늘', genre:'로맨스', cls:'romance', rating:9.7, episodes:120, views:'2.1억', status:'완결', site:'naver',  tags:['순정','감동','재회'],    bg:'#2a1520', desc:'어릴 적 헤어진 첫사랑과 10년 만에 직장에서 재회하게 된 두 사람의 가슴 설레는 사랑 이야기. 과거의 기억과 현재의 감정이 교차하며 독자들의 마음을 사로잡는다.'},
-  { id:2,  emoji:'⚔️', title:'최강의 귀환',      author:'박무진', genre:'액션',   cls:'action',  rating:9.4, episodes:280, views:'5.8억', status:'연재중', site:'naver', tags:['회귀','성장','배틀'],    bg:'#1e1308', desc:'죽음 직전 10년 전으로 회귀한 전 세계 최강자가 모든 것을 되찾기 위해 다시 정점을 향해 달려가는 이야기.' },
-  { id:3,  emoji:'🐉', title:'용사 아닙니다만',   author:'김세원', genre:'판타지', cls:'fantasy', rating:9.5, episodes:195, views:'3.4억', status:'연재중', site:'kakao', tags:['이세계','마법','개그'],  bg:'#14102a', desc:'평범한 직장인이 이세계에 소환됐지만 용사가 아닌 잡역부로 분류된다. 엉뚱한 능력으로 세계를 구하는 역발상 판타지 코미디.' },
-  { id:4,  emoji:'🔪', title:'다섯번째 피의자',   author:'최진우', genre:'스릴러', cls:'thriller',rating:9.6, episodes:88,  views:'1.9억', status:'완결', site:'lezhin', tags:['미스터리','반전','범죄'], bg:'#111110', desc:'연쇄 살인 사건의 유일한 생존자가 수사에 합류하면서 드러나는 충격적인 진실. 매 화 예상치 못한 반전이 독자를 숨막히게 한다.' },
-  { id:5,  emoji:'😂', title:'우리 회사 이상해요', author:'오유리', genre:'코미디', cls:'comedy',  rating:9.2, episodes:210, views:'4.1억', status:'연재중', site:'naver', tags:['직장물','일상','공감'],  bg:'#1e1600', desc:'대한민국 평균 회사의 개성 넘치는 직원들이 펼치는 좌충우돌 직장 생활기. 직장인이라면 공감할 수밖에 없는 현실 코미디.' },
-  { id:6,  emoji:'🌊', title:'파도가 지나면',     author:'한지수', genre:'드라마', cls:'drama',   rating:9.3, episodes:145, views:'2.7억', status:'완결', site:'ridi',   tags:['가족','치유','성장'],    bg:'#0c1a14', desc:'갑작스러운 사고로 가족을 잃은 한 여성이 낯선 섬마을에서 상처를 치유해가는 이야기. 잔잔하지만 깊은 감동을 주는 힐링 드라마.' },
-  { id:7,  emoji:'💌', title:'남주의 취향',       author:'정다은', genre:'로맨스', cls:'romance', rating:9.1, episodes:178, views:'3.2억', status:'연재중', site:'kakao', tags:['로코','오피스','삼각관계'],bg:'#2a1520', desc:'까다롭기로 소문난 편집장과 신인 작가의 티격태격 로맨스. 서로 다른 취향을 가진 두 사람이 점점 서로에게 빠져드는 과정을 담았다.' },
-  { id:8,  emoji:'🏴‍☠️', title:'검은 바다의 왕',  author:'윤민준', genre:'액션',   cls:'action',  rating:9.8, episodes:320, views:'7.2억', status:'연재중', site:'series',tags:['해적','모험','우정'],    bg:'#0c1220', desc:'세계 최강의 해적 왕이 되기 위한 한 소년의 거대한 모험담. 치열한 해전과 끈끈한 동료애가 독자들의 마음을 사로잡는 대서사시.' },
-  { id:9,  emoji:'🦋', title:'나비의 계절',       author:'서민지', genre:'로맨스', cls:'romance', rating:9.0, episodes:96,  views:'1.4억', status:'완결', site:'lezhin', tags:['순정','성장','감동'],    bg:'#1a1228', desc:'연약하지만 강인한 한 소녀가 사랑을 통해 스스로의 날개를 펼쳐가는 성장 로맨스.' },
-  { id:10, emoji:'🧬', title:'프로젝트 X',        author:'김도현', genre:'스릴러', cls:'thriller',rating:9.5, episodes:112, views:'2.3억', status:'연재중', site:'ridi',   tags:['SF','음모','긴장감'],   bg:'#0a1218', desc:'정체불명의 생체 실험을 파헤치려는 기자와 이를 막으려는 거대 기업의 숨막히는 추격전.' },
-  { id:11, emoji:'🍜', title:'오늘도 혼밥',        author:'이준호', genre:'코미디', cls:'comedy',  rating:8.9, episodes:230, views:'3.8억', status:'연재중', site:'naver',  tags:['일상','먹방','힐링'],   bg:'#1a1208', desc:'혼자 먹는 것을 즐기는 30대 직장인의 소소하고 행복한 식사 일기. 보는 것만으로도 배가 부른 힐링 코미디.' },
-  { id:12, emoji:'🏰', title:'마지막 기사단',      author:'박성현', genre:'판타지', cls:'fantasy', rating:9.6, episodes:260, views:'4.9억', status:'연재중', site:'series', tags:['중세','전쟁','우정'],   bg:'#141020', desc:'왕국의 마지막 기사단이 되어 부패한 제국에 맞서는 이야기. 장엄한 전투와 끈끈한 동료애가 빛나는 정통 판타지.' },
+  { id:1,  Image:'https://i.namu.wiki/i/6XBQxM_k_dWjZ4pIbnnbVlnv8CY4w0okCFiDYOsalSWKocpFKEGgqGLrPIQYNdCo4bA_qJQ-xe3xX8fFdEfRiGFc6n6QiN5he1OHjzPHIYutJwNaxpfH3CYoXlimxzvzReGCSOaoNZs5u3VLwfiqZQ.webp', title:'작두', author:['POGO','232'], genre:'액션', cls:'action', rating:9.7, episodes:95, views:'2.1억', status:'연재중', site:'naver',  tags:['동양','신화'],    bg:'#2a1520', desc:'미신 따윈 믿지 않는 주인공 권용진. 그의 만 16세의 생일이 지나자 눈 앞에 펼쳐진 믿을 수 없는 일들.' , link:'https://comic.naver.com/webtoon/list?titleId=828294'},
+  { id:2,  Image:'https://i.namu.wiki/i/ZRVDhEPBkn0XCV2ycBaMA-QFTPZWQeYOsUT5XeEo7qBMWgS4FXp6hINruxJH6hMapjIbl9qvXgubgpAkBjs2R8-X43Wvmv8sg8Ay8577tTTqZNZ37uCNHnZeWgAM661zE9WpUfCJ2ynnSHbbzWZJmw.webp', title:'전지적 독자 시점', author:['UMI','슬리피-C','싱숑'], genre:'판타지',   cls:'fantasy',  rating:9.4, episodes:307, views:'5.8억', status:'연재중', site:'naver', tags:['판타지','게임','세계관'],    bg:'#1e1308', desc:`\'이건 내가 아는 그 전개다\'
+  
+  한순간에 세계가 멸망하고, 새로운 세상이 펼쳐졌다.
+  
+  오직 나만이 완주했던 소설 세계에서 평범했던 독자의 새로운 삶이 시작된다.` , link:'https://comic.naver.com/webtoon/list?titleId=747269&tab=wed'},
+{ id:3, Image:'https://i.namu.wiki/i/qGXiMRVefitR8n9u6I7z37sB6GtV6aQxxojMe49FKvvmbvxivn_T3n5rqiICsrcnB8r_7BC_TOj1Det9FHa2_BJBfC9AHZ-dw3T64G4zyWvJF1gVtSLZxlrB8EN6St0V4csfhk2-FLrYRXb37Rdbxg.webp',title:'데뷔 못하면 죽는 병 걸림',author:['장진', '소흔',' 백덕수'],genre:'드라마',cls:'drama',rating:10.0,episodes:102,views:'8,830만',status:'연재중',site:'kakao',tags:['드라마','현대물','노블코믹'],
+  bg:'#14102a',
+  desc:`4년 차 공시생,
+낯선 몸에 빙의해 3년 전으로 돌아왔다.
+
+그리고 그의 눈앞에 나타난 갑작스러운 상태창의 압박!
+
+[돌발!]
+[상태이상: '데뷔가 아니면 죽음을!' 발생!]
+
+돌연사 위협 때문에
+팔자에도 없던 아이돌에 도전하게 된
+주인공의 대환장 일지.
+
+※특이사항: 빙의 전 아이돌 데이터 찍어다 팔았었음`, link:'https://page.kakao.com/content/59782511'
+},
+  { id:4,  Image:'https://ccdn.lezhin.com/v2/comics/5794272204095488/images/tall.webp?updated=1771299039981&width=420', title:'브리아노의 연구소', author:'엉덩국', genre:'코미디', cls:'comedy',rating:9.6, episodes:143,  views:'1.9억', status:'완결', site:'lezhin', tags:['sf','개그','드라마'], bg:'#111110', desc:'가난뱅이 고등학생 다비가 미스테리 과학자 브리아노의 연구소에 들어가면서 펼쳐지는 기괴한 나날들', link:'https://www.lezhin.com/ko/comic/brianoslab' },
+  { id:5,  Image:'https://i.namu.wiki/i/o9Is276ZmyM3mDWustdlNpyPKL1xR23cCSsNwH5mXRVhUxn3zXNbNRSLPcDUVBDRR3_8S1RZCaGAbdcCldZZjOvpzsRcW9UAJ7ZZWFSL2UfUrp9c0E4dcV6rnjcgcZE-T-PfDjrTEEbBifPwmBpqog.webp', title:'이직로그', author:['우시목','이하안'], genre:'로맨스', cls:'romance',  rating:9.8, episodes:55, views:'4.1억', status:'연재중', site:'naver', tags:['로맨스','오피스','오피스로맨스'],  bg:'#1e1600', desc:`스타트업 회사에 재직 중인 '조이'와 '맥스'.
+
+조이는 눈에 띄는 외모와 뛰어난 사교성, 완벽한 실력의 소유자인 반면
+맥스는 존재감 제로에 대인기피증, 혼밥 마스터이다.
+
+그런 두 사람이 한 팀, 바로 옆자리에서 공존하게 되었고
+같은 팀이 된 첫날, 맥스는 조이의 모니터에서 보면 안 될 것을 보고 말았다!
+
+그 순간부터 그의 평온한 회사 생활은 뒤틀리기 시작하는데…!`,link:'https://comic.naver.com/webtoon/list?titleId=837659' },
+  { id:6,  Image:'https://img.ridicdn.net/cover/4745000499/xxlarge?dpi=xxhdpi#1', title:'이 작품은 픽션입니다', author:'박지은', genre:'드라마', cls:'drama',   rating:10.0, episodes:35, views:'2.7억', status:'연재중', site:'ridi',   tags:['코믹물','환생','회귀'],    bg:'#0c1a14', desc:`나는 백성인. 그럭저럭 벌어먹고 사는 웹툰 작가다.
+
+인기를 위해 온갖 걸 시험해봤지만
+가장 먹히는 건 바로바로~ 여 혐 웹 툰!
+커뮤에서 떠도는 말을 만화로 옮기기만 해도
+돈을 벌 수 있다니 인생이 너무 쉬워 신이 나!
+
+내 인생은 앞으로도 탄탄대로!
+
+...였어야 했는데.` , link:'https://ridibooks.com/books/4745000427?_rdt_sid=webtoon_view-category-1603_selection_multiline&_rdt_idx=0'},
+  { id:7,  Image:'https://pbs.twimg.com/media/HEoDIY-bwAAqjDL?format=jpg&name=4096x4096', title:'검을 든 꽃', author:['고사','하라라','은소로'], genre:'로맨스', cls:'romance', rating:9.9, episodes:178, views:'1,103.8만', status:'연재중', site:'kakao', tags:['로판','회귀물','여주판타지'],bg:'#2a1520', desc:`피로 물든 제국.
+그날 나는 마검에 잠식된 채
+가장 사랑하던 사람들을 내 손으로 베었다.
+
+마검에 물든 지 15년째,
+인간이 만든 열 개의 검 기오사를 모두 소유한 나는
+신검에게 소원을 빌었다.
+
+"아무도 죽이지 않았던 과거로 나를 돌려보내줘."
+
+시간은 모든 비극이 시작되기 전으로 돌아가 있었고,
+내 손엔 아직도 검이 쥐어져 있었다.
+
+이번엔 똑같이 당하지 않겠어.
+마검도, 운명도, 그 누구도
+이젠 날 함부로 휘두르지 못해.
+
+"두 번의 기적은 없어.
+반드시 행복해질 거야."
+
+<검을 든 꽃>, 마침내 웹툰으로 피어나다.`,link:'https://page.kakao.com/content/66783957?tab_type=overview' },
+  { id:8,  Image:'https://comicthumb-phinf.pstatic.net/20250708_202/pocket_1751968634217RdWTn_JPEG/%B8%B8%B3%E2_%C8%C4_%B9%CC%B7%A1%BF%A1%BC%AD_%B7%B9%BA%A7%BE%F7_1%C8%AD_%BC%BC%B7%CE%C7%FC.jpg?type=m260', title:'만년 후 미래에서 레벨업', author:['faloo','Changpan Warrior'], genre:'액션',   cls:'action',  rating:8.2, episodes:297, views:'73.1만', status:'연재중', site:'series',tags:['소년'],    bg:'#0c1220', desc:`눈을 감으면 만년 후 세계에 도착한다.
+
+죽음이 가득한, 악몽같은 그곳에서 난 오히려 더 강해진다.`, link:'https://series.naver.com/comic/detail.series?productNo=10471293' },
+  { id:9,  Image:'https://ccdn.lezhin.com/v2/comics/7011752565964514/images/tall.webp?updated=1753841621328&width=420', title:'두근두근 공략기', author:'퓨키', genre:'로맨스', cls:'romance', rating:9.0, episodes:131,  views:'1.4억', status:'완결', site:'lezhin', tags:['회귀','능력녀','게임'],    bg:'#1a1228', desc:`하렘이야말로 미연시의 메인 콘텐츠다!
+
+밤새 미뤄뒀던 게임을 하다 잠이 든 다은은 다른 세계에서 처음 보는 인물이 되어 눈을 뜬다. 
+온통 처음 보는 것들과 마주하고 당황한 것도 잠시,
+이곳이 ‘미연시’ 게임 속임을 파악하고 ‘디아나 블량쉐’가 되어 주위 캐릭터들을 공략하기 시작한다.
+디아나가 있는 ‘에데니아’는 금발의 미남, 지적인 미남, 강아지 같은 미남 등 매력적인 캐릭터들이 잔뜩 존재하는 곳!
+디아나는 ‘역하렘’의 꿈을 실천하려 노력하고, 당당하고 아름다운 디아나의 모습에 주변 캐릭터들은 그녀에게 빠져든다.
+
+하지만, 시간이 지날수록 디아나는 왜인지 모를 위화감을 느끼고 게임 속 세상의 비밀을 파헤치는데…!!
+
+두근두근 하트 헌터! — 심장을 맡겨줘~ —`, link:'https://www.lezhin.com/ko/comic/dugeundugeun'},
+  { id:10, Image:'https://img.ridicdn.net/cover/4949000001/xxlarge?dpi=xxhdpi#1', title:'사바하', author:['스르륵 코믹스','장재현'], genre:'스릴러', cls:'thriller',rating:9.8, episodes:27, views:'500만', status:'완결', site:'ridi',   tags:['SF','진지함','공포'],   bg:'#0a1218', desc:`사이비 종교의 악행을 파헤치는 목사 박웅재.
+그에게 신흥 종교 '사슴 동산'이라는 새로운 목표물이 생긴다.
+사기 집단 정도로 생각했던 ‘사슴 동산’이
+근래 발견된 의문의 변사체와 연관이 있다는 사실이 밝혀지고,
+웅재는 사슴 동산에 숨겨진 추악하고 끔찍한 진실을 보게 되는데…
+
+"이 사람들, 귀신 잡으러 다니고 있어."
+
+기독교와 불교를 넘나드는 오컬트 미스터리 스릴러.`,link:'https://ridibooks.com/books/4949000001?_rdt_sid=webtoon_view-category-1610_selection_multiline&_rdt_idx=0' },
+  { id:11, Image:'https://i.namu.wiki/i/5lnCaAerm0u5kZpBrQ-SnpK9eQRJTMaaJpSsEZnol9MuPDKrm0QTt8SGJ5gZMj82CVgj1Df_WGL4WpohdobPnEZYaSysosN1yw2rsZGJmZNUJdWdQFQySC0vxH8yRJk80MRjo-HTLis7JG_i0OAwbw.webp', title:'방구석 재민이', author:'뽈쟁이', genre:'코미디', cls:'comedy',  rating:9.71, episodes:48, views:'38만', status:'연재중', site:'naver',  tags:['일상','개그','공감'],   bg:'#1a1208', desc:`"게임 좀 작작하고 밖에 가서 좀 놀아라!"
+바깥보다 집 안이 더 편하고, 스포츠보다 게임이 더 즐거운 방구석 사람들,
+어디든 게임이랑 인터넷만 할 수 있다면 그것만으로도 족하다!
+
+오늘도 내 잔잔한 일상을 지키기 위해,
+방구석에서 벌어지는 스펙터클한 사투가 시작된다!`, link:'https://comic.naver.com/webtoon/list?titleId=839712' },
+  { id:12, Image:'https://comicthumb-phinf.pstatic.net/20200902_294/pocket_1599043747734LVlM6_JPEG/__600x860.jpg?type=m260', title:'시월드 판타지', author:['진돌/히디'], genre:'판타지', cls:'fantasy', rating:10.0, episodes:99, views:'216만', status:'완결', site:'series', tags:['개그','판타지','드라마'],   bg:'#141020', desc:`출세가도의 길을 걷던 용사 조라세. 
+신원미상의 초절정 꽃미남과의 결혼이 찾아왔다.
+그런데...시어머니가 대.마.왕?! ㄴ(°0°)ㄱ` , link:'https://series.naver.com/comic/detail.series?productNo=5434757'},
 ];
 
 let activeSite  = 'all';
@@ -161,8 +244,7 @@ function render() {
   grid.innerHTML = list.map((w, i) => `
     <div class="card" style="animation-delay:${i * 0.05}s"
          onclick="openDetail(${w.id})" tabindex="0" role="button" aria-label="${w.title} 상세보기">
-      <div class="card-thumb" style="background:${w.bg}">
-        <span>${w.emoji}</span>
+      <div class="card-thumb" style="background-Image:url('${w.Image}')">
         <span class="card-site-badge" style="background:${siteColors[w.site]}">${SITES.find(s=>s.id===w.site).label}</span>
       </div>
       <div class="card-body">
@@ -183,8 +265,8 @@ function openDetail(id) {
   const ongoing = w.status === '연재중';
   const site    = SITES.find(s => s.id === w.site);
 
-  document.getElementById('dThumb').style.background = w.bg;
-  document.getElementById('dThumb').innerHTML = `<span>${w.emoji}</span>`;
+  document.getElementById('dThumb').style.backgroundImage = `url('${w.Image}')`;
+  document.getElementById('dThumb').innerHTML = '';
 
   document.getElementById('dMetaRow').innerHTML =
     `<span class="detail-genre">${w.genre}</span>
@@ -207,7 +289,7 @@ function openDetail(id) {
     w.tags.map(t => `<span class="tag">#${t}</span>`).join('');
 
   document.getElementById('dReadBtn').onclick = () =>
-    alert(`${site.label}에서 "${w.title}" 첫화 보기`);
+  window.open(w.link, '_blank');
 
   document.getElementById('overlay').classList.add('open');
   document.getElementById('detailPanel').classList.add('open');

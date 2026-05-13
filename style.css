@@ -460,6 +460,7 @@ main {
   font-size: 14px;
   color: rgba(240, 237, 232, 0.7);
   line-height: 1.8;
+  white-space: pre-line;
 }
  
 .detail-tags {
@@ -536,4 +537,10 @@ main {
   main          { padding: 2rem 1rem; }
   .search-wrap input { width: 120px; }
   .detail-panel { width: 100%; }
+}
+.card-thumb,
+.detail-thumb {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
